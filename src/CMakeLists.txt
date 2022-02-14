@@ -33,7 +33,12 @@ target_include_directories(tcam-firmware-update
   PRIVATE ${LIBZIP_INCLUDE_DIR}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/external/PugiXml")
 
-target_link_libraries(tcam-firmware-update ${LIBUSB_1_LIBRARIES} ${LIBZIP_LIBRARY})
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+# dependency for libusb
+find_package(UDev REQUIRED QUIET)
+
+target_link_libraries(tcam-firmware-update PRIVATE ${LIBUSB_1_LIBRARIES} ${LIBZIP_LIBRARY} Threads::Threads ${UDEV_LIBRARIES})
 
 install(TARGETS tcam-firmware-update
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+  DESTINATION "${CMAKE_INSTALL_PREFIX}/")

@@ -11,26 +11,26 @@ This tool allows you to update the firmware of your TIS USB camera under Linux.
 List all available cameras:
 
 ```
-firmware-update -l
+tcam-firmware-update -l
 ```
 
 Get information about a single camera:
 
 ```
-firmware-update -id <serial number>
+tcam-firmware-update -id <serial number>
 ```
 
 Apply firmware
 
 ```
-firmware-update -ud <serial number> -f firmware-file
+tcam-firmware-update -ud <serial number> -f firmware-file
 ```
 
 Switch camera to UVC/proprietary mode
 
 ```
-firmware-update -d <serialnumber> -m uvc
-firmware-update -d <serialnumber> -m proprietary
+tcam-firmware-update -d <serialnumber> -m uvc
+tcam-firmware-update -d <serialnumber> -m proprietary
 ```
 
 Switching to uvc mode is only necessary for USB2 cameras.
@@ -56,6 +56,7 @@ Required dependencies are:
 
 - libusb-1.0
 - libzip
+- libudev
 
 For compilation additional dev packages may be required.
 
@@ -67,6 +68,10 @@ cd tcam-firmware-update/build
 cmake ..
 make
 ```
+
+Do not call `make install`.
+tcam-firmware-update is not intended for system wide use.
+
 
 # License
 
