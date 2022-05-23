@@ -52,6 +52,13 @@ set(CMAKE_INSTALL_PREFIX "/")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+add_compile_options( -Wno-psabi )   # disable ABI change message of g++8
+add_compile_options( -Wall -Wextra -pedantic -pthread )
+
+set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+set( CMAKE_POSITION_INDEPENDENT_CODE ON )
+
 set(TCAM_FW_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(TCAM_FW_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 
