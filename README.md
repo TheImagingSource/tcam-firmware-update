@@ -25,6 +25,7 @@ Apply firmware
 ```
 tcam-firmware-update -ud <serial number> -f firmware-file
 ```
+It is recommended to have only one camera attached to the system when updating the firmware.
 
 Switch camera to UVC/proprietary mode
 

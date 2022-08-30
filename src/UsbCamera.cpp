@@ -16,6 +16,7 @@
 
 #include "UsbCamera.h"
 
+#include <cstring>
 #include <stdexcept>
 
 namespace tis
@@ -109,8 +110,68 @@ bool UsbCamera::open()
 {
     try
     {
-        this->dev_handle = libusb_open_device_with_vid_pid(
-            usb_session->get_session(), dev.idVendor, dev.idProduct);
+        // List all devices.
+        libusb_device** devs;
+        int cnt = libusb_get_device_list(usb_session->get_session(), &devs);
+        if (cnt < 0)
+        {
+            throw std::runtime_error("Unable to retrieve device list. " + std::to_string(cnt));
+        }
+
+        // Look for the device with matching serial number and store its device
+        // handle.
+        for (ssize_t i = 0; i < cnt; i++)
+        {
+            // Get device descriptor for current device in list.
+            libusb_device_descriptor desc;
+            int r = libusb_get_device_descriptor(devs[i], &desc);
+            if (r < 0)
+            {
+                throw std::runtime_error("Unable to retrieve device descriptor. "
+                                         + std::to_string(r));
+            }
+
+            // Ignore device if not from TIS or otherwise needed.
+            if (desc.idVendor != 0x199e && desc.idVendor != 0xeb1a && desc.idVendor != 0x04b4)
+            {
+                continue;
+            }
+            // Get device handle.
+            libusb_device_handle* dh;
+            r = libusb_open(devs[i], &dh);
+            if (r < 0)
+            {
+                throw std::runtime_error("Unable to open device. " + std::to_string(r));
+            }
+
+            // Get ASCII representation of device serial number.
+            char serial[256];
+            r = libusb_get_string_descriptor_ascii(dh,
+                                                   desc.iSerialNumber,
+                                                   (unsigned char*)serial,
+                                                   sizeof(serial));
+            if (r < 0)
+            {
+                throw std::runtime_error(
+                    "Unable to get ASCII representation of device serial number. "
+                    + std::to_string(r));
+            }
+
+            // Ignore device if it does not have the expected serial number.
+            if (strcmp(serial, dev.serial) != 0)
+            {
+                // Close device and continue to next device in list.
+                libusb_close(dh);
+                continue;
+            }
+
+            // Device handle of desired camera has been retrieved successfully, assign
+            // to member variable and break loop.
+            this->dev_handle = dh;
+            break;
+        }
+        // Free device list.
+        libusb_free_device_list(devs, 1);
 
         if (this->dev_handle == NULL)
         {
