@@ -24,6 +24,7 @@
 #include <chrono>
 #include <cstdint>
 #include <thread>
+#include <stdexcept>
 
 namespace lib33u
 {

@@ -17,6 +17,7 @@
 #include "GenCPFacade.h"
 
 #include <limits>
+#include <stdexcept>
 #include <string.h>
 
 namespace lib33u

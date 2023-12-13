@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cstdint>
+#include <stdexcept>
 #include <thread>
 
 namespace lib33u
