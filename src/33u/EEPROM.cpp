@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <thread>
+#include <stdexcept>
 
 namespace lib33u
 {
