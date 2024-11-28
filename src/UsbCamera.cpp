@@ -15,6 +15,7 @@
  */
 
 #include "UsbCamera.h"
+#include "definitions.h"
 
 #include <cstring>
 #include <stdexcept>
@@ -78,17 +79,20 @@ const camera_type find_camera_type(const unsigned int& idVendor, const unsigned 
     // type not known assure we still can handle the device
     // as long as it is one of ours
 
-    if ((idProduct & (0x9000)) == (0x9000))
+    if ((idProduct & (0xFC00)) == (0x9000)     // 33U
+        || (idProduct & (0xFC00)) == (0x9400)  // 37U
+        || (idProduct & (0xFC00)) == (0x9800)  // 38U
+        || (idProduct & (0xFC00)) == (0x9C00)) // 32U
     {
-        return { USB33, idVendor, idProduct, "Unkown USB33 Camera" };
+        return { USB33, idVendor, idProduct, "Unknown USB33 Camera" };
     }
 
-    if ((idProduct & (0x8400)) == (0x8400))
+    if ((idProduct & (0xFF00)) == (0x8400))
     {
         return { USB3, idVendor, idProduct, "Unknown USB3 Camera" };
     }
 
-    if ((idProduct & (0x8200)) == (0x8200) || (idProduct & (0x8300)) == (0x8300))
+    if ((idProduct & (0xFF00)) == (0x8200) || (idProduct & (0xFF00)) == (0x8300))
     {
         return { USB2, idVendor, idProduct, "Unknown USB2 Camera" };
     }
