@@ -182,6 +182,7 @@ void print_device_info(const std::string& serial_number)
 
     if (type.camera_type == USB2)
     {
+        std::cout << "USB2 type" << std::endl;
         UVC_COMPLIANCE mode = cam->get_mode();
 
         std::cout << "UVC mode is:         ";
@@ -196,11 +197,27 @@ void print_device_info(const std::string& serial_number)
     }
     else if (type.camera_type == USB3 && cam->get_firmware_version() < 102)
     {
+        std::cout << "USB3 type" << std::endl;
         std::cout << "\n!!! FIRMWARE UPGRADE REQUIRED !!!\n\n";
         std::cout << "To correctly interact with this camera under Linux\n";
         std::cout << "this device requires a firmware upgrade.\n\n";
         std::cout << "Please contact the manufacturer to receive the concerning firmware files."
                   << std::endl;
+    }
+    else if (type.camera_type >= USB3) {
+        std::cout << "USB type:            ";
+        switch (type.camera_type) {
+        case USB3: std::cout << "USB3" << std::endl; break;
+        case USB33: std::cout << "USB33" << std::endl; break;
+        case USB37: std::cout << "USB37" << std::endl; break;
+        default: std::cout << "Unknown: " << type.camera_type << " "
+                           << type.product_name << std::endl;
+        }
+        std::cout << "Please contact the manufacturer to check for firmware updates."
+                  << std::endl;
+    }
+    else {
+        std::cout << "USB type:            " << type.product_name << std::endl;
     }
 
     std::cout << std::endl;

@@ -58,7 +58,8 @@ static const camera_type camera_type_list[] = {
     { USB3, TIS_VENDOR_ID, 0x8415, "DFK 23UM021" },
     { USB3, TIS_VENDOR_ID, 0x8416, "DFK 23UP031" },
     { USB3, TIS_VENDOR_ID, 0x8426, "DMK 23UP031-AF" },
-    { USB3, TIS_VENDOR_ID, 0x8436, "DFK 23UP031-AF" }
+    { USB3, TIS_VENDOR_ID, 0x8436, "DFK 23UP031-AF" },
+    { USB37, TIS_VENDOR_ID, 0x9402, "DMK 37BUX178" }
 };
 
 
@@ -71,23 +72,33 @@ const camera_type find_camera_type(const unsigned int& idVendor, const unsigned 
             return c;
         }
     }
+    const unsigned int idProductMask = 0xFC00;
 
     // type not known assure we still can handle the device
     // as long as it is one of ours
+    if (idVendor != 0x199e)
+        return camera_type_list[0];
 
-    if ((idProduct & (0x9000)) == (0x9000))
+    if (idProductMask == 0x9400)
+    {
+        return { USB37, idVendor, idProduct, "Unkown USB37 Camera" };
+    }
+    else if (idProductMask == 0x9000 ||
+             idProductMask == 0x9800 ||
+             idProductMask == 0x9c00)
     {
         return { USB33, idVendor, idProduct, "Unkown USB33 Camera" };
     }
-
-    if ((idProduct & (0x8400)) == (0x8400))
-    {
-        return { USB3, idVendor, idProduct, "Unknown USB3 Camera" };
-    }
-
-    if ((idProduct & (0x8200)) == (0x8200) || (idProduct & (0x8300)) == (0x8300))
+    else if (idProductMask == 0x8200 || idProductMask == 0x8300)
     {
         return { USB2, idVendor, idProduct, "Unknown USB2 Camera" };
+    }
+    else if (idProductMask == 0x8400 ||
+             idProductMask == 0x8500 ||
+             idProductMask == 0x8600 ||
+             idProductMask == 0x8700)
+    {
+        return { USB2, idVendor, idProduct, "Unknown USB2.3 Camera" };
     }
 
     return camera_type_list[0];

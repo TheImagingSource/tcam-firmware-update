@@ -38,6 +38,7 @@ enum TYPE
     USB2,
     USB3,
     USB33,
+    USB37,
 };
 
 struct camera_type
