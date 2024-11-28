@@ -22,7 +22,10 @@
 namespace tis
 {
 
-// lookup table for all supported camera types
+// lookup table for supported camera types
+// that are legacy and not part of fwpack firmware packages
+// 33, 37, and other modern cameras are identified by their
+// family and not by their model and thus nor part of this list.
 static const camera_type camera_type_list[] = {
     { UNKNOWN, 0, 0, "" },
     /* registration of USB2 cameras with jumper attached */

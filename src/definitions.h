@@ -25,6 +25,9 @@ namespace tis
 #define TIS_VENDOR_ID 0x199e
 
 
+// Flag for UVC/Proprietary switch
+// only relevant for USB2 cameras
+// all other cameras always have UVC enabled
 enum UVC_COMPLIANCE
 {
     CAMERA_INTERFACE_MODE_PROPRIETARY,
@@ -32,13 +35,17 @@ enum UVC_COMPLIANCE
 };
 
 
+// TYPE identifies the kind of firmware writing
+// operation we need to perform,
+// NOT the type of camera series.
 enum TYPE
 {
     UNKNOWN = 0,
-    USB2,
-    USB3,
-    USB33,
+    USB2,  // One4All, 72, 42, 22
+    USB3,  // 23 series
+    USB33, // 33, 37, 38, 32
 };
+
 
 struct camera_type
 {
