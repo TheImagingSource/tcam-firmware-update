@@ -62,7 +62,8 @@ static const camera_type camera_type_list[] = {
     { USB3, TIS_VENDOR_ID, 0x8415, "DFK 23UM021" },
     { USB3, TIS_VENDOR_ID, 0x8416, "DFK 23UP031" },
     { USB3, TIS_VENDOR_ID, 0x8426, "DMK 23UP031-AF" },
-    { USB3, TIS_VENDOR_ID, 0x8436, "DFK 23UP031-AF" }
+    { USB3, TIS_VENDOR_ID, 0x8436, "DFK 23UP031-AF" },
+    { USB33, TIS_VENDOR_ID, 0x9C18, "DFG/HDMI" }
 };
 
 
